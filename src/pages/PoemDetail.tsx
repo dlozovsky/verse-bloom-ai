@@ -1,12 +1,17 @@
 import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Heart, Share2, BookMarked, ArrowLeft } from "lucide-react";
+import { Heart, Share2, BookMarked, ArrowLeft, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAIAnalysis } from "@/hooks/useAIAnalysis";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PoemDetail = () => {
   const { id } = useParams();
+  const { analyzePoem, isLoading, result } = useAIAnalysis();
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   // Mock data
   const poem = {
@@ -40,6 +45,11 @@ And that has made all the difference.`,
     theme: "Life & Choices",
     views: 15420,
     favorites: 892,
+  };
+
+  const handleAnalyze = async () => {
+    setShowAnalysis(true);
+    await analyzePoem(poem, "analyze");
   };
 
   return (
@@ -91,6 +101,41 @@ And that has made all the difference.`,
               <pre className="poem-text whitespace-pre-wrap font-serif text-foreground/90">
                 {poem.body}
               </pre>
+            </CardContent>
+          </Card>
+
+          {/* AI Analysis Section */}
+          <Card className="bg-gradient-to-br from-primary/5 to-accent/20 border-2 border-primary/20">
+            <CardContent className="p-8 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  <h3 className="text-2xl font-serif font-bold">AI Literary Analysis</h3>
+                </div>
+                {!showAnalysis && (
+                  <Button onClick={handleAnalyze} disabled={isLoading}>
+                    {isLoading ? "Analyzing..." : "Analyze This Poem"}
+                  </Button>
+                )}
+              </div>
+              
+              {showAnalysis && (
+                <div className="space-y-4">
+                  {isLoading ? (
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                  ) : result ? (
+                    <p className="text-base leading-relaxed">{result}</p>
+                  ) : null}
+                </div>
+              )}
+              
+              <p className="text-sm text-muted-foreground">
+                Powered by AI • Provides literary insights on themes, devices, and meaning
+              </p>
             </CardContent>
           </Card>
 

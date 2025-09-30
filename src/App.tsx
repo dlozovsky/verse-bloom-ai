@@ -7,6 +7,9 @@ import Index from "./pages/Index";
 import PoemDetail from "./pages/PoemDetail";
 import PoetProfile from "./pages/PoetProfile";
 import Discover from "./pages/Discover";
+import Random from "./pages/Random";
+import Themes from "./pages/Themes";
+import Poets from "./pages/Poets";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +25,9 @@ const App = () => (
           <Route path="/discover" element={<Discover />} />
           <Route path="/poem/:id" element={<PoemDetail />} />
           <Route path="/poet/:id" element={<PoetProfile />} />
+          <Route path="/random" element={<Random />} />
+          <Route path="/themes" element={<Themes />} />
+          <Route path="/poets" element={<Poets />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,1 +1,4 @@
 project_id = "dpluhufrjvnrgwmzznrl"
+
+[functions.analyze-poem]
+verify_jwt = false
