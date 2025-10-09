@@ -14,13 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      poem_themes: {
+        Row: {
+          poem_id: string
+          theme_id: string
+        }
+        Insert: {
+          poem_id: string
+          theme_id: string
+        }
+        Update: {
+          poem_id?: string
+          theme_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poem_themes_poem_id_fkey"
+            columns: ["poem_id"]
+            isOneToOne: false
+            referencedRelation: "poems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "poem_themes_theme_id_fkey"
+            columns: ["theme_id"]
+            isOneToOne: false
+            referencedRelation: "themes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      poems: {
+        Row: {
+          body: string
+          created_at: string
+          favorites: number | null
+          id: string
+          poet_id: string
+          title: string
+          views: number | null
+          year_published: number | null
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          favorites?: number | null
+          id?: string
+          poet_id: string
+          title: string
+          views?: number | null
+          year_published?: number | null
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          favorites?: number | null
+          id?: string
+          poet_id?: string
+          title?: string
+          views?: number | null
+          year_published?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poems_poet_id_fkey"
+            columns: ["poet_id"]
+            isOneToOne: false
+            referencedRelation: "poets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      poets: {
+        Row: {
+          bio: string | null
+          birth_year: number | null
+          created_at: string
+          death_year: number | null
+          id: string
+          name: string
+          nationality: string | null
+        }
+        Insert: {
+          bio?: string | null
+          birth_year?: number | null
+          created_at?: string
+          death_year?: number | null
+          id?: string
+          name: string
+          nationality?: string | null
+        }
+        Update: {
+          bio?: string | null
+          birth_year?: number | null
+          created_at?: string
+          death_year?: number | null
+          id?: string
+          name?: string
+          nationality?: string | null
+        }
+        Relationships: []
+      }
+      themes: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_poem_views: {
+        Args: { poem_uuid: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
