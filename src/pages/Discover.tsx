@@ -12,14 +12,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Discover = () => {
   const [searchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [selectedTheme, setSelectedTheme] = useState(searchParams.get("theme") || "all");
   const { data: poems, isLoading } = usePoems(undefined, selectedTheme !== "all" ? selectedTheme : undefined);
   const { data: themes } = useThemes();
 
-  useEffect(() => { if (searchParams.get("theme")) setSelectedTheme(searchParams.get("theme") || "all"); }, [searchParams]);
+  useEffect(() => { 
+    if (searchParams.get("theme")) setSelectedTheme(searchParams.get("theme") || "all");
+    if (searchParams.get("search")) setSearchQuery(searchParams.get("search") || "");
+  }, [searchParams]);
 
-  const filteredPoems = poems?.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.poets.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredPoems = poems?.filter(p => 
+    !searchQuery || 
+    p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    p.poets.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.body.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen flex flex-col">

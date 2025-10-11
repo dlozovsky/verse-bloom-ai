@@ -8,6 +8,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAIAnalysis } from "@/hooks/useAIAnalysis";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePoemDetail, useIncrementViews, useRelatedPoems } from "@/hooks/usePoemDetail";
+import { useIsFavorite, useToggleFavorite } from "@/hooks/useFavorites";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const PoemDetail = () => {
   const { id } = useParams();
@@ -16,6 +19,10 @@ const PoemDetail = () => {
   const { data: relatedPoems } = useRelatedPoems(poem?.poets?.id, id);
   const { analyzePoem, isLoading, result } = useAIAnalysis();
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const { user } = useAuth();
+  const { data: isFavorite, isLoading: isFavoriteLoading } = useIsFavorite(id || "");
+  const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite();
+  const { toast } = useToast();
 
   // Increment views on mount
   useEffect(() => {
@@ -32,6 +39,36 @@ const PoemDetail = () => {
       body: poem.body,
       poet: poem.poets.name,
     }, "analyze");
+  };
+
+  const handleFavorite = () => {
+    if (!user) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to save poems to your favorites.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (id) {
+      toggleFavorite(id);
+    }
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      await navigator.share({
+        title: poem?.title,
+        text: `Check out "${poem?.title}" by ${poem?.poets.name}`,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Link Copied",
+        description: "Poem link copied to clipboard!",
+      });
+    }
   };
 
   if (isPoemLoading) {
@@ -103,17 +140,19 @@ const PoemDetail = () => {
 
           {/* Action buttons */}
           <div className="flex items-center space-x-3">
-            <Button size="lg" className="gap-2">
-              <Heart className="h-5 w-5" />
-              <span>Save ({poem.favorites})</span>
+            <Button 
+              size="lg" 
+              className="gap-2" 
+              onClick={handleFavorite}
+              disabled={isToggling || isFavoriteLoading}
+              variant={isFavorite ? "default" : "outline"}
+            >
+              <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
+              <span>{isFavorite ? 'Saved' : 'Save'}</span>
             </Button>
-            <Button size="lg" variant="outline" className="gap-2">
+            <Button size="lg" variant="outline" className="gap-2" onClick={handleShare}>
               <Share2 className="h-5 w-5" />
               <span>Share</span>
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2">
-              <BookMarked className="h-5 w-5" />
-              <span>Add to Collection</span>
             </Button>
           </div>
 
