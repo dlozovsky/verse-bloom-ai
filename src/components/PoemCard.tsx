@@ -53,8 +53,8 @@ const PoemCard = ({ id, title, poet, poetId, excerpt, theme, views, favorites }:
               </span>
             )}
           </div>
-          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-            Read more →
+          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80" asChild>
+            <Link to={`/poem/${id}`}>Read more →</Link>
           </Button>
         </div>
       </CardContent>
