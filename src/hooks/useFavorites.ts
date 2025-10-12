@@ -22,6 +22,7 @@ export const useFavorites = () => {
             id,
             title,
             body,
+            poet_id,
             poets(name),
             poem_themes(themes(name))
           )

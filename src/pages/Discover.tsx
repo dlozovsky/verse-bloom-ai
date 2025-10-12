@@ -52,7 +52,7 @@ const Discover = () => {
             {isLoading ? (
               Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-64" />)
             ) : filteredPoems && filteredPoems.length > 0 ? (
-              filteredPoems.map((p) => <PoemCard key={p.id} id={p.id} title={p.title} poet={p.poets.name} excerpt={p.body.split('\n').slice(0, 3).join('\n') + '...'} theme={p.poem_themes[0]?.themes.name} views={p.views} favorites={p.favorites} />)
+              filteredPoems.map((p) => <PoemCard key={p.id} id={p.id} title={p.title} poet={p.poets.name} poetId={p.poet_id} excerpt={p.body.split('\n').slice(0, 3).join('\n') + '...'} theme={p.poem_themes[0]?.themes.name} views={p.views} favorites={p.favorites} />)
             ) : (
               <div className="col-span-3 text-center py-12"><p className="text-muted-foreground">No poems found.</p></div>
             )}

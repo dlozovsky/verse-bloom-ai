@@ -55,6 +55,7 @@ const Favorites = () => {
                   id={fav.poems.id}
                   title={fav.poems.title}
                   poet={fav.poems.poets.name}
+                  poetId={fav.poems.poet_id}
                   excerpt={fav.poems.body.split('\n').slice(0, 3).join('\n') + '...'}
                   theme={fav.poems.poem_themes[0]?.themes.name}
                   views={0}

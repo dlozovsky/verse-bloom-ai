@@ -43,43 +43,32 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold mb-4">Community</h3>
+            <h3 className="font-semibold mb-4">Account</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">
-                  Submit a Poem
-                </Link>
-              </li>
               <li>
                 <Link to="/favorites" className="text-muted-foreground hover:text-primary transition-colors">
                   My Favorites
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
-                  About Us
+                <Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">
+                  Sign In
                 </Link>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-semibold mb-4">Legal</h3>
+            <h3 className="font-semibold mb-4">Features</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
-                </Link>
+              <li className="text-muted-foreground">
+                AI-Powered Analysis
               </li>
-              <li>
-                <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">
-                  Terms of Service
-                </Link>
+              <li className="text-muted-foreground">
+                Personal Collections
               </li>
-              <li>
-                <Link to="/copyright" className="text-muted-foreground hover:text-primary transition-colors">
-                  Copyright
-                </Link>
+              <li className="text-muted-foreground">
+                Daily Inspiration
               </li>
             </ul>
           </div>

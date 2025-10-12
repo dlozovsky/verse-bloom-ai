@@ -40,7 +40,7 @@ const PoetProfile = () => {
             {poet.poems && poet.poems.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {poet.poems.map((poem) => (
-                  <PoemCard key={poem.id} id={poem.id} title={poem.title} poet={poet.name} excerpt={poem.body.split('\n').slice(0, 3).join('\n') + '...'} theme={poem.poem_themes?.[0]?.themes.name} views={poem.views} favorites={poem.favorites} />
+                  <PoemCard key={poem.id} id={poem.id} title={poem.title} poet={poet.name} poetId={poet.id} excerpt={poem.body.split('\n').slice(0, 3).join('\n') + '...'} theme={poem.poem_themes?.[0]?.themes.name} views={poem.views} favorites={poem.favorites} />
                 ))}
               </div>
             ) : <p className="text-muted-foreground">No poems available.</p>}

@@ -7,13 +7,14 @@ interface PoemCardProps {
   id: string;
   title: string;
   poet: string;
+  poetId: string;
   excerpt: string;
   theme?: string;
   views?: number;
   favorites?: number;
 }
 
-const PoemCard = ({ id, title, poet, excerpt, theme, views, favorites }: PoemCardProps) => {
+const PoemCard = ({ id, title, poet, poetId, excerpt, theme, views, favorites }: PoemCardProps) => {
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 h-full">
       <CardContent className="p-6 space-y-4">
@@ -28,7 +29,7 @@ const PoemCard = ({ id, title, poet, excerpt, theme, views, favorites }: PoemCar
               {title}
             </h3>
           </Link>
-          <Link to={`/poet/${id}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+          <Link to={`/poet/${poetId}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
             by {poet}
           </Link>
         </div>

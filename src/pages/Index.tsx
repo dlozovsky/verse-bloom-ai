@@ -44,6 +44,7 @@ const Index = () => {
                   id={poem.id}
                   title={poem.title}
                   poet={poem.poets.name}
+                  poetId={poem.poet_id}
                   excerpt={poem.body.split('\n').slice(0, 3).join('\n') + '...'}
                   theme={poem.poem_themes[0]?.themes.name}
                   views={poem.views}
