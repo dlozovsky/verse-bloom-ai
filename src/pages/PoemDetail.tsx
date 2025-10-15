@@ -9,6 +9,7 @@ import { useAIAnalysis } from "@/hooks/useAIAnalysis";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePoemDetail, useIncrementViews, useRelatedPoems } from "@/hooks/usePoemDetail";
 import { useIsFavorite, useToggleFavorite } from "@/hooks/useFavorites";
+import { useAddToHistory } from "@/hooks/useReadingHistory";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,6 +17,7 @@ const PoemDetail = () => {
   const { id } = useParams();
   const { data: poem, isLoading: isPoemLoading } = usePoemDetail(id);
   const { mutate: incrementViews } = useIncrementViews();
+  const { mutate: addToHistory } = useAddToHistory();
   const { data: relatedPoems } = useRelatedPoems(poem?.poets?.id, id);
   const { analyzePoem, isLoading, result } = useAIAnalysis();
   const [showAnalysis, setShowAnalysis] = useState(false);
@@ -24,12 +26,15 @@ const PoemDetail = () => {
   const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite();
   const { toast } = useToast();
 
-  // Increment views on mount
+  // Increment views and add to reading history on mount
   useEffect(() => {
     if (id) {
       incrementViews(id);
+      if (user) {
+        addToHistory(id);
+      }
     }
-  }, [id, incrementViews]);
+  }, [id, user, incrementViews, addToHistory]);
 
   const handleAnalyze = async () => {
     if (!poem) return;

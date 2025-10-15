@@ -172,6 +172,35 @@ export type Database = {
         }
         Relationships: []
       }
+      reading_history: {
+        Row: {
+          id: string
+          poem_id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          poem_id: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          poem_id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_history_poem_id_fkey"
+            columns: ["poem_id"]
+            isOneToOne: false
+            referencedRelation: "poems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       themes: {
         Row: {
           created_at: string
