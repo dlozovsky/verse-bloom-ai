@@ -64,16 +64,22 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     
     const systemPrompt = type === 'poem' 
-      ? `You are a poetry expert. When asked about a poem, provide accurate information about real, famous poems. Include the complete poem text (at least 8-12 lines), the poet's name, publication year if known, and a brief theme description. Format your response as JSON with this structure:
+      ? `You are a poetry expert. When given a search query, provide accurate information about real, famous poems. 
+
+If the query is a POET'S NAME (like "Pushkin", "Shakespeare", "Frost"), return one of their most famous poems.
+If the query is a POEM TITLE, return that specific poem.
+
+ALWAYS return a complete, real poem with at least 8-12 lines. Include the poet's name, publication year if known, and theme. Format as JSON:
 {
   "title": "poem title",
-  "poet": "poet name",
+  "poet": "full poet name",
   "year": year or null,
-  "body": "complete poem text with line breaks (\\n)",
+  "body": "complete poem text with line breaks (\\n) - at least 8-12 lines",
   "theme": "main theme (Love, Nature, Philosophy, or Life & Choices)",
   "bio": "brief poet bio (2-3 sentences)"
 }
-Only return poems that actually exist. If you're not sure, say so.`
+
+IMPORTANT: If given a poet name, choose their most famous work. Never refuse - always return a real, famous poem.`
       : `You are a poetry expert. When asked about a poet, provide accurate biographical information about real, famous poets. Format your response as JSON with this structure:
 {
   "name": "poet full name",
