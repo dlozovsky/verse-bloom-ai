@@ -8,9 +8,17 @@ import { Upload, CheckCircle2 } from "lucide-react";
 
 const DataLoader = () => {
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<{
+    totalProcessed: number;
+    addedPoems: number;
+    addedPoets: number;
+    skippedPoems: number;
+    currentPoem: string;
+  } | null>(null);
   const [result, setResult] = useState<{
     addedPoems: number;
     addedPoets: number;
+    skippedPoems: number;
     totalProcessed: number;
   } | null>(null);
   const { toast } = useToast();
@@ -21,13 +29,17 @@ const DataLoader = () => {
 
     setLoading(true);
     setResult(null);
+    setProgress(null);
 
     try {
-      const result = await loadPoetryData(file);
+      const result = await loadPoetryData(file, (progressUpdate) => {
+        setProgress(progressUpdate);
+      });
       setResult(result);
+      setProgress(null);
       toast({
         title: "✅ Data Loaded Successfully",
-        description: `Added ${result.addedPoems} poems and ${result.addedPoets} poets`,
+        description: `Added ${result.addedPoems} poems, ${result.addedPoets} poets. Skipped ${result.skippedPoems} duplicates.`,
       });
     } catch (error) {
       toast({
@@ -75,11 +87,42 @@ const DataLoader = () => {
             </label>
           </div>
 
-          {loading && (
+          {loading && progress && (
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Progress</span>
+                  <span className="font-medium">{progress.totalProcessed} processed</span>
+                </div>
+                <Progress value={undefined} className="w-full" />
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="space-y-1">
+                  <p className="text-2xl font-bold text-green-600">{progress.addedPoems}</p>
+                  <p className="text-xs text-muted-foreground">Poems Added</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-2xl font-bold text-blue-600">{progress.addedPoets}</p>
+                  <p className="text-xs text-muted-foreground">Poets Added</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-2xl font-bold text-orange-600">{progress.skippedPoems}</p>
+                  <p className="text-xs text-muted-foreground">Duplicates Skipped</p>
+                </div>
+              </div>
+              
+              <p className="text-sm text-muted-foreground text-center truncate">
+                Current: {progress.currentPoem}
+              </p>
+            </div>
+          )}
+
+          {loading && !progress && (
             <div className="space-y-2">
               <Progress value={undefined} className="w-full" />
               <p className="text-sm text-muted-foreground text-center">
-                Processing poems... This may take a few minutes.
+                Initializing... This may take a few minutes.
               </p>
             </div>
           )}
@@ -95,6 +138,7 @@ const DataLoader = () => {
                       <li>Total processed: {result.totalProcessed} poems</li>
                       <li>New poems added: {result.addedPoems}</li>
                       <li>New poets added: {result.addedPoets}</li>
+                      <li>Duplicates skipped: {result.skippedPoems}</li>
                     </ul>
                   </div>
                 </div>

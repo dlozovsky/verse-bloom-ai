@@ -9,7 +9,18 @@ interface PoetryRow {
   Tags?: string;
 }
 
-export const loadPoetryData = async (file: File) => {
+interface ProgressUpdate {
+  totalProcessed: number;
+  addedPoems: number;
+  addedPoets: number;
+  skippedPoems: number;
+  currentPoem: string;
+}
+
+export const loadPoetryData = async (
+  file: File,
+  onProgress?: (progress: ProgressUpdate) => void
+) => {
   try {
     // Read the ZIP file
     const zip = await JSZip.loadAsync(file);
@@ -33,6 +44,7 @@ export const loadPoetryData = async (file: File) => {
     
     let addedPoems = 0;
     let addedPoets = 0;
+    let skippedPoems = 0;
     const processedPoets = new Map<string, string>(); // poet name -> poet id
     
     // Process in batches to avoid overwhelming the database
@@ -96,6 +108,19 @@ export const loadPoetryData = async (file: File) => {
             
             if (poemError) throw poemError;
             addedPoems++;
+          } else {
+            skippedPoems++;
+          }
+          
+          // Report progress
+          if (onProgress) {
+            onProgress({
+              totalProcessed: i + batch.indexOf(row) + 1,
+              addedPoems,
+              addedPoets,
+              skippedPoems,
+              currentPoem: row.Title,
+            });
           }
         } catch (error) {
           console.error(`Error processing poem "${row.Title}":`, error);
@@ -109,6 +134,7 @@ export const loadPoetryData = async (file: File) => {
       success: true,
       addedPoems,
       addedPoets,
+      skippedPoems,
       totalProcessed: parsed.data.length,
     };
   } catch (error) {
