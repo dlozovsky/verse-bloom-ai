@@ -5,11 +5,19 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Sparkles, BookMarked } from "lucide-react";
 import { useFeaturedPoems } from "@/hooks/usePoems";
+import { useThemes } from "@/hooks/useThemes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Heart, Trees, Book } from "lucide-react";
 
 const Index = () => {
   const { data: featuredPoems, isLoading } = useFeaturedPoems();
+  const { data: themes, isLoading: themesLoading } = useThemes();
+  
+  const iconMap: Record<string, any> = { "Love": Heart, "Nature": Trees, "Philosophy": Book, "Life & Choices": Sparkles };
+  const getIcon = (name: string) => iconMap[name] || Book;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -62,17 +70,48 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Themes CTA */}
-        <section className="rounded-2xl bg-gradient-to-br from-accent to-accent/50 p-12 text-center space-y-6">
-          <BookMarked className="h-12 w-12 text-primary mx-auto" />
-          <h2 className="text-3xl font-serif font-bold">Explore by Theme</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Journey through poetry organized by universal themes - from love and loss to nature and joy
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 pt-4">
+        {/* Themes Section */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <BookMarked className="h-5 w-5 text-primary" />
+                <h2 className="text-3xl font-serif font-bold">Explore by Theme</h2>
+              </div>
+              <p className="text-muted-foreground">Journey through poetry by universal themes</p>
+            </div>
             <Button variant="outline" asChild>
-              <Link to="/themes">Explore Themes</Link>
+              <Link to="/themes">View All</Link>
             </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {themesLoading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className="h-48" />
+              ))
+            ) : themes && themes.length > 0 ? (
+              themes.slice(0, 4).map((theme) => {
+                const Icon = getIcon(theme.name);
+                return (
+                  <Link key={theme.id} to={`/discover?theme=${theme.name}`}>
+                    <Card className="group hover:shadow-lg transition-all h-full">
+                      <CardContent className="p-6 space-y-4">
+                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <Icon className="h-8 w-8 text-primary" />
+                        </div>
+                        <h3 className="text-xl font-serif font-bold group-hover:text-primary transition-colors">{theme.name}</h3>
+                        <Badge variant="secondary">{theme.poem_themes?.[0]?.count || 0} poems</Badge>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })
+            ) : (
+              <div className="col-span-4 text-center py-12">
+                <p className="text-muted-foreground">No themes available.</p>
+              </div>
+            )}
           </div>
         </section>
       </main>
