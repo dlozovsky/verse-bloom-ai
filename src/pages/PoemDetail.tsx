@@ -12,6 +12,7 @@ import { useIsFavorite, useToggleFavorite } from "@/hooks/useFavorites";
 import { useAddToHistory } from "@/hooks/useReadingHistory";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { CommentsSection } from "@/components/CommentsSection";
 
 const PoemDetail = () => {
   const { id } = useParams();
@@ -221,6 +222,9 @@ const PoemDetail = () => {
               </CardContent>
             </Card>
           )}
+
+          {/* Comments Section */}
+          <CommentsSection poemId={id!} />
 
           {/* Related poems */}
           {relatedPoems && relatedPoems.length > 0 && (

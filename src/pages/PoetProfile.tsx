@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PoemCard from "@/components/PoemCard";
-import { ArrowLeft, User } from "lucide-react";
+import { ArrowLeft, User, TrendingUp } from "lucide-react";
 import { usePoetDetail } from "@/hooks/usePoets";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,15 @@ const PoetProfile = () => {
             </div>
           </div>
           <div className="space-y-6">
-            <h2 className="text-3xl font-serif font-bold">Poems by {poet.name}</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-serif font-bold">Poems by {poet.name}</h2>
+              <Button variant="outline" asChild>
+                <Link to={`/poet/${poet.id}/analytics`}>
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  View Analytics
+                </Link>
+              </Button>
+            </div>
             {poet.poems && poet.poems.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {poet.poems.map((poem) => (

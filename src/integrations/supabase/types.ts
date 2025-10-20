@@ -14,6 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
+      collection_poems: {
+        Row: {
+          added_at: string
+          collection_id: string
+          poem_id: string
+        }
+        Insert: {
+          added_at?: string
+          collection_id: string
+          poem_id: string
+        }
+        Update: {
+          added_at?: string
+          collection_id?: string
+          poem_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_poems_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_poems_poem_id_fkey"
+            columns: ["poem_id"]
+            isOneToOne: false
+            referencedRelation: "poems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_public: boolean
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          poem_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          poem_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          poem_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_poem_id_fkey"
+            columns: ["poem_id"]
+            isOneToOne: false
+            referencedRelation: "poems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       favorites: {
         Row: {
           created_at: string

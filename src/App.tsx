@@ -16,6 +16,7 @@ import Favorites from "./pages/Favorites";
 import Profile from "./pages/Profile";
 import DataLoader from "./pages/DataLoader";
 import NotFound from "./pages/NotFound";
+import PoetAnalytics from "./pages/PoetAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/discover" element={<Discover />} />
             <Route path="/poem/:id" element={<PoemDetail />} />
             <Route path="/poet/:id" element={<PoetProfile />} />
+            <Route path="/poet/:id/analytics" element={<PoetAnalytics />} />
             <Route path="/random" element={<Random />} />
             <Route path="/themes" element={<Themes />} />
             <Route path="/poets" element={<Poets />} />
