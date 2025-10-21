@@ -96,7 +96,9 @@ export const CommentsSection = ({ poemId }: CommentsSectionProps) => {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="font-semibold">
-                      {(comment as any).profiles?.display_name || "Anonymous"}
+                      {Array.isArray(comment.profiles) 
+                        ? comment.profiles[0]?.display_name 
+                        : (comment.profiles as any)?.display_name || "Anonymous"}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}

@@ -11,12 +11,17 @@ export const useThemes = () => {
           id,
           name,
           description,
-          poem_themes(count)
+          poem_themes!inner(count)
         `)
         .order("name");
 
       if (error) throw error;
-      return data;
+      
+      // Transform data to include poem count
+      return data?.map(theme => ({
+        ...theme,
+        poemCount: (theme.poem_themes as any)?.[0]?.count || 0
+      })) || [];
     },
   });
 };

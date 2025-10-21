@@ -101,7 +101,7 @@ const Index = () => {
                           <Icon className="h-8 w-8 text-primary" />
                         </div>
                         <h3 className="text-xl font-serif font-bold group-hover:text-primary transition-colors">{theme.name}</h3>
-                        <Badge variant="secondary">{theme.poem_themes?.[0]?.count || 0} poems</Badge>
+                        <Badge variant="secondary">{(theme as any).poemCount || 0} poems</Badge>
                       </CardContent>
                     </Card>
                   </Link>
