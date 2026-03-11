@@ -3,9 +3,10 @@ import Hero from "@/components/Hero";
 import PoemCard from "@/components/PoemCard";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Sparkles, BookMarked } from "lucide-react";
+import { Sparkles, BookMarked, CalendarDays } from "lucide-react";
 import { useFeaturedPoems } from "@/hooks/usePoems";
 import { useThemes } from "@/hooks/useThemes";
+import { usePoemOfTheDay } from "@/hooks/usePoemOfTheDay";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +16,7 @@ import { Heart, Trees, Book } from "lucide-react";
 const Index = () => {
   const { data: featuredPoems, isLoading } = useFeaturedPoems();
   const { data: themes, isLoading: themesLoading } = useThemes();
+  const { data: poemOfTheDay, isLoading: potdLoading } = usePoemOfTheDay();
   
   const iconMap: Record<string, any> = { "Love": Heart, "Nature": Trees, "Philosophy": Book, "Life & Choices": Sparkles };
   const getIcon = (name: string) => iconMap[name] || Book;
@@ -25,6 +27,44 @@ const Index = () => {
       <Hero />
       
       <main className="flex-1 container py-12 space-y-16">
+        {/* Poem of the Day */}
+        <section className="space-y-6">
+          <div className="flex items-center space-x-2">
+            <CalendarDays className="h-5 w-5 text-primary" />
+            <h2 className="text-3xl font-serif font-bold">Poem of the Day</h2>
+          </div>
+          
+          {potdLoading ? (
+            <Skeleton className="h-48" />
+          ) : poemOfTheDay ? (
+            <Card className="bg-gradient-to-br from-primary/5 to-accent/20 border-2 border-primary/20 overflow-hidden">
+              <CardContent className="p-8 md:p-12">
+                <div className="max-w-3xl">
+                  {poemOfTheDay.poem_themes?.[0] && (
+                    <Badge variant="secondary" className="mb-3">
+                      {(poemOfTheDay.poem_themes as any)[0]?.themes?.name}
+                    </Badge>
+                  )}
+                  <Link to={`/poem/${poemOfTheDay.id}`}>
+                    <h3 className="font-serif text-3xl md:text-4xl font-bold hover:text-primary transition-colors mb-2">
+                      {poemOfTheDay.title}
+                    </h3>
+                  </Link>
+                  <Link to={`/poet/${poemOfTheDay.poets?.id}`} className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                    by {(poemOfTheDay.poets as any)?.name}
+                  </Link>
+                  <pre className="poem-text whitespace-pre-wrap text-foreground/80 mt-6 line-clamp-6">
+                    {poemOfTheDay.body}
+                  </pre>
+                  <Button className="mt-6" asChild>
+                    <Link to={`/poem/${poemOfTheDay.id}`}>Read Full Poem →</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : null}
+        </section>
+
         {/* Featured Section */}
         <section className="space-y-6">
           <div className="flex items-center justify-between">
