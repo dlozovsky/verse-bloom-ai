@@ -19,57 +19,30 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Explore</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/discover" className="text-muted-foreground hover:text-primary transition-colors">
-                  Discover Poems
-                </Link>
-              </li>
-              <li>
-                <Link to="/poets" className="text-muted-foreground hover:text-primary transition-colors">
-                  Browse Poets
-                </Link>
-              </li>
-              <li>
-                <Link to="/themes" className="text-muted-foreground hover:text-primary transition-colors">
-                  Themes
-                </Link>
-              </li>
-              <li>
-                <Link to="/random" className="text-muted-foreground hover:text-primary transition-colors">
-                  Random Poem
-                </Link>
-              </li>
+              <li><Link to="/discover" className="text-muted-foreground hover:text-primary transition-colors">Discover Poems</Link></li>
+              <li><Link to="/poets" className="text-muted-foreground hover:text-primary transition-colors">Browse Poets</Link></li>
+              <li><Link to="/themes" className="text-muted-foreground hover:text-primary transition-colors">Themes</Link></li>
+              <li><Link to="/collections" className="text-muted-foreground hover:text-primary transition-colors">Collections</Link></li>
+              <li><Link to="/random" className="text-muted-foreground hover:text-primary transition-colors">Random Poem</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-semibold mb-4">Account</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/favorites" className="text-muted-foreground hover:text-primary transition-colors">
-                  My Favorites
-                </Link>
-              </li>
-              <li>
-                <Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">
-                  Sign In
-                </Link>
-              </li>
+              <li><Link to="/favorites" className="text-muted-foreground hover:text-primary transition-colors">My Favorites</Link></li>
+              <li><Link to="/reading-history" className="text-muted-foreground hover:text-primary transition-colors">Reading History</Link></li>
+              <li><Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">Sign In</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-semibold mb-4">Features</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-muted-foreground">
-                AI-Powered Analysis
-              </li>
-              <li className="text-muted-foreground">
-                Personal Collections
-              </li>
-              <li className="text-muted-foreground">
-                Daily Inspiration
-              </li>
+              <li className="text-muted-foreground">AI-Powered Analysis</li>
+              <li className="text-muted-foreground">Personal Collections</li>
+              <li className="text-muted-foreground">Poem of the Day</li>
+              <li className="text-muted-foreground">Reading History</li>
             </ul>
           </div>
         </div>
