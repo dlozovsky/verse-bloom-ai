@@ -325,10 +325,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      increment_poem_views: {
-        Args: { poem_uuid: string }
-        Returns: undefined
-      }
+      increment_poem_views: { Args: { poem_uuid: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
