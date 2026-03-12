@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Heart, Share2, BookMarked, ArrowLeft, Sparkles } from "lucide-react";
+import { Heart, Share2, ArrowLeft, Sparkles, Copy, Check, Volume2, Pause, Square, Type } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAIAnalysis } from "@/hooks/useAIAnalysis";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,7 +12,23 @@ import { useIsFavorite, useToggleFavorite } from "@/hooks/useFavorites";
 import { useAddToHistory } from "@/hooks/useReadingHistory";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { usePageTitle } from "@/hooks/usePageTitle";
+import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { CommentsSection } from "@/components/CommentsSection";
+import AddToCollectionButton from "@/components/AddToCollectionButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const FONT_SIZES = [
+  { label: "Small", value: "text-base" },
+  { label: "Medium", value: "text-lg" },
+  { label: "Large", value: "text-xl" },
+  { label: "Extra Large", value: "text-2xl" },
+];
 
 const PoemDetail = () => {
   const { id } = useParams();
@@ -26,8 +42,12 @@ const PoemDetail = () => {
   const { data: isFavorite, isLoading: isFavoriteLoading } = useIsFavorite(id || "");
   const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite();
   const { toast } = useToast();
+  const [copied, setCopied] = useState(false);
+  const [fontSizeIdx, setFontSizeIdx] = useState(1); // Medium default
+  const { speak, pause, resume, stop, isSpeaking, isPaused, isSupported } = useTextToSpeech();
 
-  // Increment views and add to reading history on mount
+  usePageTitle(poem ? `${poem.title} by ${poem.poets.name}` : undefined);
+
   useEffect(() => {
     if (id) {
       incrementViews(id);
@@ -49,31 +69,37 @@ const PoemDetail = () => {
 
   const handleFavorite = () => {
     if (!user) {
-      toast({
-        title: "Sign In Required",
-        description: "Please sign in to save poems to your favorites.",
-        variant: "destructive",
-      });
+      toast({ title: "Sign In Required", description: "Please sign in to save poems to your favorites.", variant: "destructive" });
       return;
     }
-    if (id) {
-      toggleFavorite(id);
-    }
+    if (id) toggleFavorite(id);
   };
 
   const handleShare = async () => {
     if (navigator.share) {
-      await navigator.share({
-        title: poem?.title,
-        text: `Check out "${poem?.title}" by ${poem?.poets.name}`,
-        url: window.location.href,
-      });
+      await navigator.share({ title: poem?.title, text: `Check out "${poem?.title}" by ${poem?.poets.name}`, url: window.location.href });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      toast({
-        title: "Link Copied",
-        description: "Poem link copied to clipboard!",
-      });
+      toast({ title: "Link Copied", description: "Poem link copied to clipboard!" });
+    }
+  };
+
+  const handleCopyPoem = () => {
+    if (!poem) return;
+    const text = `${poem.title}\nby ${poem.poets.name}\n\n${poem.body}`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    toast({ title: "Poem Copied", description: "Full poem text copied to clipboard." });
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleTTS = () => {
+    if (isSpeaking && !isPaused) {
+      pause();
+    } else if (isPaused) {
+      resume();
+    } else if (poem) {
+      speak(`${poem.title}, by ${poem.poets.name}. ${poem.body}`);
     }
   };
 
@@ -101,9 +127,7 @@ const PoemDetail = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl font-bold mb-4">Poem Not Found</h1>
             <p className="text-muted-foreground mb-8">The poem you're looking for doesn't exist.</p>
-            <Button asChild>
-              <Link to="/">Return Home</Link>
-            </Button>
+            <Button asChild><Link to="/">Return Home</Link></Button>
           </div>
         </main>
         <Footer />
@@ -114,16 +138,13 @@ const PoemDetail = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
       <main className="flex-1 container py-12">
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* Back button */}
           <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to home
           </Link>
 
-          {/* Poem header */}
           <div className="space-y-4">
             {poem.poem_themes?.[0] && (
               <span className="inline-block text-sm font-medium text-secondary bg-accent px-3 py-1 rounded">
@@ -145,10 +166,10 @@ const PoemDetail = () => {
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center space-x-3">
-            <Button 
-              size="lg" 
-              className="gap-2" 
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              size="lg"
+              className="gap-2"
               onClick={handleFavorite}
               disabled={isToggling || isFavoriteLoading}
               variant={isFavorite ? "default" : "outline"}
@@ -156,16 +177,60 @@ const PoemDetail = () => {
               <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
               <span>{isFavorite ? 'Saved' : 'Save'}</span>
             </Button>
+            <AddToCollectionButton poemId={id!} />
             <Button size="lg" variant="outline" className="gap-2" onClick={handleShare}>
               <Share2 className="h-5 w-5" />
-              <span>Share</span>
+              <span className="hidden sm:inline">Share</span>
             </Button>
+            <Button size="lg" variant="outline" className="gap-2" onClick={handleCopyPoem}>
+              {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
+              <span className="hidden sm:inline">{copied ? "Copied" : "Copy"}</span>
+            </Button>
+            {isSupported && (
+              <Button size="lg" variant="outline" className="gap-2" onClick={handleTTS}>
+                {isSpeaking && !isPaused ? (
+                  <Pause className="h-5 w-5" />
+                ) : (
+                  <Volume2 className="h-5 w-5" />
+                )}
+                <span className="hidden sm:inline">
+                  {isSpeaking && !isPaused ? "Pause" : isPaused ? "Resume" : "Listen"}
+                </span>
+              </Button>
+            )}
+            {isSpeaking && (
+              <Button size="lg" variant="ghost" className="gap-2" onClick={stop}>
+                <Square className="h-4 w-4" />
+                <span className="hidden sm:inline">Stop</span>
+              </Button>
+            )}
           </div>
 
-          {/* Poem body */}
+          {/* Poem body with font size control */}
           <Card className="border-2">
-            <CardContent className="p-12">
-              <pre className="poem-text whitespace-pre-wrap font-serif text-foreground/90">
+            <div className="flex items-center justify-end px-6 pt-4 gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground">
+                    <Type className="h-4 w-4" />
+                    Font Size
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {FONT_SIZES.map((fs, idx) => (
+                    <DropdownMenuItem
+                      key={fs.label}
+                      onClick={() => setFontSizeIdx(idx)}
+                      className={`cursor-pointer ${idx === fontSizeIdx ? "font-bold text-primary" : ""}`}
+                    >
+                      {fs.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <CardContent className="p-12 pt-4">
+              <pre className={`poem-text whitespace-pre-wrap font-serif text-foreground/90 ${FONT_SIZES[fontSizeIdx].value} leading-relaxed`}>
                 {poem.body}
               </pre>
             </CardContent>
@@ -185,7 +250,6 @@ const PoemDetail = () => {
                   </Button>
                 )}
               </div>
-              
               {showAnalysis && (
                 <div className="space-y-4">
                   {isLoading ? (
@@ -199,7 +263,6 @@ const PoemDetail = () => {
                   ) : null}
                 </div>
               )}
-              
               <p className="text-sm text-muted-foreground">
                 Powered by AI • Provides literary insights on themes, devices, and meaning
               </p>
@@ -211,22 +274,16 @@ const PoemDetail = () => {
             <Card className="bg-muted/30">
               <CardContent className="p-8 space-y-4">
                 <h3 className="text-2xl font-serif font-bold">About {poem.poets.name}</h3>
-                <p className="text-base leading-relaxed">
-                  {poem.poets.bio}
-                </p>
+                <p className="text-base leading-relaxed">{poem.poets.bio}</p>
                 <Button variant="outline" asChild>
-                  <Link to={`/poet/${poem.poets.id}`}>
-                    View all poems by {poem.poets.name} →
-                  </Link>
+                  <Link to={`/poet/${poem.poets.id}`}>View all poems by {poem.poets.name} →</Link>
                 </Button>
               </CardContent>
             </Card>
           )}
 
-          {/* Comments Section */}
           <CommentsSection poemId={id!} />
 
-          {/* Related poems */}
           {relatedPoems && relatedPoems.length > 0 && (
             <div className="space-y-6 pt-8">
               <h3 className="text-2xl font-serif font-bold">You might also enjoy</h3>
@@ -248,7 +305,6 @@ const PoemDetail = () => {
           )}
         </div>
       </main>
-      
       <Footer />
     </div>
   );
