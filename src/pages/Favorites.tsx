@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import Header from "@/components/Header";
