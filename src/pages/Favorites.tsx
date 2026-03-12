@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import Header from "@/components/Header";
@@ -11,6 +12,8 @@ import { Heart } from "lucide-react";
 const Favorites = () => {
   const { user } = useAuth();
   const { data: favorites, isLoading } = useFavorites();
+  
+  useEffect(() => { document.title = "My Favorites — Poetry Hub"; }, []);
 
   if (!user) {
     return (

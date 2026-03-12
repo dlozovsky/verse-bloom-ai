@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,6 +10,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Poets = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  
+  useEffect(() => { document.title = "Master Poets — Poetry Hub"; }, []);
   const { data: poets, isLoading } = usePoets(searchQuery);
 
   return (
