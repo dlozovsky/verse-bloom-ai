@@ -12,8 +12,10 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Trees, Book } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 const Index = () => {
+  usePageTitle();
   const { data: featuredPoems, isLoading } = useFeaturedPoems();
   const { data: themes, isLoading: themesLoading } = useThemes();
   const { data: poemOfTheDay, isLoading: potdLoading } = usePoemOfTheDay();
