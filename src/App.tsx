@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
+import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import PoemDetail from "./pages/PoemDetail";
 import PoetProfile from "./pages/PoetProfile";
@@ -23,34 +25,37 @@ import ReadingHistory from "./pages/ReadingHistory";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/poem/:id" element={<PoemDetail />} />
-            <Route path="/poet/:id" element={<PoetProfile />} />
-            <Route path="/poet/:id/analytics" element={<PoetAnalytics />} />
-            <Route path="/random" element={<Random />} />
-            <Route path="/themes" element={<Themes />} />
-            <Route path="/poets" element={<Poets />} />
-            <Route path="/collections" element={<Collections />} />
-            <Route path="/reading-history" element={<ReadingHistory />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/data-loader" element={<DataLoader />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/poem/:id" element={<PoemDetail />} />
+              <Route path="/poet/:id" element={<PoetProfile />} />
+              <Route path="/poet/:id/analytics" element={<PoetAnalytics />} />
+              <Route path="/random" element={<Random />} />
+              <Route path="/themes" element={<Themes />} />
+              <Route path="/poets" element={<Poets />} />
+              <Route path="/collections" element={<Collections />} />
+              <Route path="/reading-history" element={<ReadingHistory />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/data-loader" element={<DataLoader />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
