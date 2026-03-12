@@ -10,6 +10,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Poets = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  
+  useEffect(() => { document.title = "Master Poets — Poetry Hub"; }, []);
   const { data: poets, isLoading } = usePoets(searchQuery);
 
   return (
