@@ -6,7 +6,7 @@ import PoemCard from "@/components/PoemCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Sparkles, Loader2 } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { usePoems } from "@/hooks/usePoems";
 import { useThemes } from "@/hooks/useThemes";
@@ -16,10 +16,13 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 
 const PAGE_SIZE = 12;
 
+type SortOption = "newest" | "popular" | "favorites" | "alphabetical";
+
 const Discover = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [selectedTheme, setSelectedTheme] = useState(searchParams.get("theme") || "all");
+  const [sortBy, setSortBy] = useState<SortOption>("popular");
   const [aiResults, setAiResults] = useState<any[]>([]);
   const [showAiResults, setShowAiResults] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -34,17 +37,26 @@ const Discover = () => {
     if (searchParams.get("search")) setSearchQuery(searchParams.get("search") || "");
   }, [searchParams]);
 
-  // Reset visible count when filters change
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [searchQuery, selectedTheme]);
+  }, [searchQuery, selectedTheme, sortBy]);
 
-  const filteredPoems = poems?.filter(p =>
-    !searchQuery ||
-    p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.poets.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.body.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPoems = poems
+    ?.filter(p =>
+      !searchQuery ||
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.poets.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.body.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    ?.sort((a, b) => {
+      switch (sortBy) {
+        case "newest": return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+        case "popular": return (b.views || 0) - (a.views || 0);
+        case "favorites": return (b.favorites || 0) - (a.favorites || 0);
+        case "alphabetical": return a.title.localeCompare(b.title);
+        default: return 0;
+      }
+    });
 
   const paginatedPoems = filteredPoems?.slice(0, visibleCount);
   const hasMore = filteredPoems ? visibleCount < filteredPoems.length : false;
@@ -83,10 +95,19 @@ const Discover = () => {
               />
             </div>
             <Select value={selectedTheme} onValueChange={setSelectedTheme}>
-              <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Themes</SelectItem>
                 {themes?.map((t) => <SelectItem key={t.id} value={t.name}>{t.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="popular">Most Popular</SelectItem>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="favorites">Most Favorited</SelectItem>
+                <SelectItem value="alphabetical">A – Z</SelectItem>
               </SelectContent>
             </Select>
             {searchQuery && filteredPoems && filteredPoems.length === 0 && !showAiResults && (
@@ -141,15 +162,9 @@ const Discover = () => {
             )}
           </div>
 
-          {/* Load More */}
           {hasMore && !showAiResults && (
             <div className="text-center pt-4">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
-                className="gap-2"
-              >
+              <Button variant="outline" size="lg" onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)} className="gap-2">
                 Load More Poems
               </Button>
               <p className="text-sm text-muted-foreground mt-2">

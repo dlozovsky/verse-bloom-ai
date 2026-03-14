@@ -9,6 +9,7 @@ export type Poem = {
   year_published: number | null;
   views: number;
   favorites: number;
+  created_at: string;
   poets: {
     name: string;
   };
