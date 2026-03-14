@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 import PoetAnalytics from "./pages/PoetAnalytics";
 import Collections from "./pages/Collections";
 import ReadingHistory from "./pages/ReadingHistory";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/collections" element={<Collections />} />
               <Route path="/reading-history" element={<ReadingHistory />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/data-loader" element={<DataLoader />} />

@@ -32,7 +32,7 @@ const Themes = () => {
                           <Icon className="h-10 w-10 text-primary" />
                         </div>
                         <h3 className="text-2xl font-serif font-bold group-hover:text-primary transition-colors">{theme.name}</h3>
-                        <Badge variant="secondary">{theme.poem_themes?.[0]?.count || 0} poems</Badge>
+                        <Badge variant="secondary">{(theme as any).poemCount || 0} poems</Badge>
                       </CardContent>
                     </Card>
                   </Link>
