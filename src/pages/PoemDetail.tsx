@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Heart, Share2, ArrowLeft, Sparkles, Copy, Check, Volume2, Pause, Square, Type } from "lucide-react";
+import { Heart, Share2, ArrowLeft, Sparkles, Copy, Check, Volume2, Pause, Square, Type, Image } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAIAnalysis } from "@/hooks/useAIAnalysis";
 import { Skeleton } from "@/components/ui/skeleton";
