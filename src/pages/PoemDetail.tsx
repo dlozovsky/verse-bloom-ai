@@ -16,6 +16,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { CommentsSection } from "@/components/CommentsSection";
 import AddToCollectionButton from "@/components/AddToCollectionButton";
+import { useShareAsImage } from "@/hooks/useShareAsImage";
 import {
   DropdownMenu,
   DropdownMenuContent,
