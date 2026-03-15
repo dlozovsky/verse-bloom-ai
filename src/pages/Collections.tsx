@@ -47,55 +47,57 @@ const Collections = () => {
   };
 
   const CollectionCard = ({ collection, showDelete }: { collection: any; showDelete?: boolean }) => (
-    <Card className="hover:shadow-lg transition-shadow group">
-      <CardContent className="p-6 space-y-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-              <Library className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-serif text-xl font-bold group-hover:text-primary transition-colors">
-                {collection.name}
-              </h3>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                {collection.is_public ? (
-                  <Globe className="h-3 w-3" />
-                ) : (
-                  <Lock className="h-3 w-3" />
-                )}
-                <span>{collection.is_public ? "Public" : "Private"}</span>
-                <span>•</span>
-                <span>{(collection.collection_poems as any)?.[0]?.count || 0} poems</span>
+    <Link to={`/collection/${collection.id}`}>
+      <Card className="hover:shadow-lg transition-shadow group h-full">
+        <CardContent className="p-6 space-y-3">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                <Library className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl font-bold group-hover:text-primary transition-colors">
+                  {collection.name}
+                </h3>
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  {collection.is_public ? (
+                    <Globe className="h-3 w-3" />
+                  ) : (
+                    <Lock className="h-3 w-3" />
+                  )}
+                  <span>{collection.is_public ? "Public" : "Private"}</span>
+                  <span>•</span>
+                  <span>{(collection.collection_poems as any)?.[0]?.count || 0} poems</span>
+                </div>
               </div>
             </div>
+            {showDelete && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); deleteCollection.mutate(collection.id); }}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
           </div>
-          {showDelete && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
-              onClick={() => deleteCollection.mutate(collection.id)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+          {collection.description && (
+            <p className="text-sm text-muted-foreground line-clamp-2">{collection.description}</p>
           )}
-        </div>
-        {collection.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">{collection.description}</p>
-        )}
-        {collection.profiles && (
-          <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-            <User className="h-3 w-3" />
-            <span>
-              {Array.isArray(collection.profiles)
-                ? collection.profiles[0]?.display_name
-                : (collection.profiles as any)?.display_name || "Anonymous"}
-            </span>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          {collection.profiles && (
+            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+              <User className="h-3 w-3" />
+              <span>
+                {Array.isArray(collection.profiles)
+                  ? collection.profiles[0]?.display_name
+                  : (collection.profiles as any)?.display_name || "Anonymous"}
+              </span>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </Link>
   );
 
   return (

@@ -20,6 +20,7 @@ import DataLoader from "./pages/DataLoader";
 import NotFound from "./pages/NotFound";
 import PoetAnalytics from "./pages/PoetAnalytics";
 import Collections from "./pages/Collections";
+import CollectionDetail from "./pages/CollectionDetail";
 import ReadingHistory from "./pages/ReadingHistory";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/themes" element={<Themes />} />
               <Route path="/poets" element={<Poets />} />
               <Route path="/collections" element={<Collections />} />
+              <Route path="/collection/:id" element={<CollectionDetail />} />
               <Route path="/reading-history" element={<ReadingHistory />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/reset-password" element={<ResetPassword />} />

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Heart, Share2, ArrowLeft, Sparkles, Copy, Check, Volume2, Pause, Square, Type } from "lucide-react";
+import { Heart, Share2, ArrowLeft, Sparkles, Copy, Check, Volume2, Pause, Square, Type, Image } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAIAnalysis } from "@/hooks/useAIAnalysis";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,6 +16,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { CommentsSection } from "@/components/CommentsSection";
 import AddToCollectionButton from "@/components/AddToCollectionButton";
+import { useShareAsImage } from "@/hooks/useShareAsImage";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +46,7 @@ const PoemDetail = () => {
   const [copied, setCopied] = useState(false);
   const [fontSizeIdx, setFontSizeIdx] = useState(1); // Medium default
   const { speak, pause, resume, stop, isSpeaking, isPaused, isSupported } = useTextToSpeech();
+  const { shareAsImage } = useShareAsImage();
 
   usePageTitle(poem ? `${poem.title} by ${poem.poets.name}` : undefined);
 
@@ -162,6 +164,10 @@ const PoemDetail = () => {
                   <span>{poem.year_published}</span>
                 </>
               )}
+              <span>•</span>
+              <span className="text-sm">
+                {Math.max(1, Math.ceil(poem.body.split(/\s+/).length / 200))} min read · {poem.body.split(/\s+/).length} words
+              </span>
             </div>
           </div>
 
@@ -181,6 +187,10 @@ const PoemDetail = () => {
             <Button size="lg" variant="outline" className="gap-2" onClick={handleShare}>
               <Share2 className="h-5 w-5" />
               <span className="hidden sm:inline">Share</span>
+            </Button>
+            <Button size="lg" variant="outline" className="gap-2" onClick={() => shareAsImage(poem.title, poem.poets.name, poem.body)}>
+              <Image className="h-5 w-5" />
+              <span className="hidden sm:inline">Share as Image</span>
             </Button>
             <Button size="lg" variant="outline" className="gap-2" onClick={handleCopyPoem}>
               {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
