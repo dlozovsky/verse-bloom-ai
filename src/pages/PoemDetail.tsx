@@ -191,6 +191,7 @@ const PoemDetail = () => {
             <Button size="lg" variant="outline" className="gap-2" onClick={() => shareAsImage(poem.title, poem.poets.name, poem.body)}>
               <Image className="h-5 w-5" />
               <span className="hidden sm:inline">Share as Image</span>
+            </Button>
             <Button size="lg" variant="outline" className="gap-2" onClick={handleCopyPoem}>
               {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
               <span className="hidden sm:inline">{copied ? "Copied" : "Copy"}</span>
