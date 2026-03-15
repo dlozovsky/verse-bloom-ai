@@ -20,6 +20,7 @@ import DataLoader from "./pages/DataLoader";
 import NotFound from "./pages/NotFound";
 import PoetAnalytics from "./pages/PoetAnalytics";
 import Collections from "./pages/Collections";
+import CollectionDetail from "./pages/CollectionDetail";
 import ReadingHistory from "./pages/ReadingHistory";
 import ResetPassword from "./pages/ResetPassword";
 
