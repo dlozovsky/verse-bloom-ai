@@ -46,6 +46,7 @@ const PoemDetail = () => {
   const [copied, setCopied] = useState(false);
   const [fontSizeIdx, setFontSizeIdx] = useState(1); // Medium default
   const { speak, pause, resume, stop, isSpeaking, isPaused, isSupported } = useTextToSpeech();
+  const { shareAsImage } = useShareAsImage();
 
   usePageTitle(poem ? `${poem.title} by ${poem.poets.name}` : undefined);
 
