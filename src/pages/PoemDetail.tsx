@@ -162,6 +162,10 @@ const PoemDetail = () => {
                   <span>{poem.year_published}</span>
                 </>
               )}
+              <span>•</span>
+              <span className="text-sm">
+                {Math.max(1, Math.ceil(poem.body.split(/\s+/).length / 200))} min read · {poem.body.split(/\s+/).length} words
+              </span>
             </div>
           </div>
 

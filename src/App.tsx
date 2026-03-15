@@ -45,6 +45,7 @@ const App = () => (
               <Route path="/themes" element={<Themes />} />
               <Route path="/poets" element={<Poets />} />
               <Route path="/collections" element={<Collections />} />
+              <Route path="/collection/:id" element={<CollectionDetail />} />
               <Route path="/reading-history" element={<ReadingHistory />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/reset-password" element={<ResetPassword />} />
