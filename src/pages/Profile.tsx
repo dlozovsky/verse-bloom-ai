@@ -27,6 +27,7 @@ const Profile = () => {
   const [stats, setStats] = useState({ favorites: 0, history: 0, comments: 0, collections: 0 });
 
   usePageTitle("Profile");
+  const { data: streakData } = useReadingStreak(user?.id);
 
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
