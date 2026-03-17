@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, BookOpen, Heart, LogOut, User, Menu, X, Moon, Sun, Library, Clock } from "lucide-react";
+import GuestBanner from "@/components/GuestBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
