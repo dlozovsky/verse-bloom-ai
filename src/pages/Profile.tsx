@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Heart, BookOpen, MessageSquare, Clock } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import { useReadingStreak } from "@/hooks/useReadingStreak";
+import ReadingHeatmap from "@/components/ReadingHeatmap";
 
 const Profile = () => {
   const { user } = useAuth();
