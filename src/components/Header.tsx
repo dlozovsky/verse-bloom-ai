@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, BookOpen, Heart, LogOut, User, Menu, X, Moon, Sun, Library, Clock } from "lucide-react";
+import GuestBanner from "@/components/GuestBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,6 +38,8 @@ const Header = () => {
   ];
 
   return (
+    <>
+    <GuestBanner />
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2 group">
@@ -208,6 +211,7 @@ const Header = () => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 

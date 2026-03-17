@@ -173,6 +173,13 @@ const Auth = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <div className="text-center">
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground" onClick={() => navigate("/discover")}>
+            Continue as Guest →
+          </Button>
+          <p className="text-xs text-muted-foreground mt-1">Browse poems without an account</p>
+        </div>
       </div>
     </div>
   );

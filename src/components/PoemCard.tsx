@@ -27,7 +27,7 @@ const PoemCard = ({ id, title, poet, poetId, excerpt, theme, views, favorites }:
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      toast({ title: "Sign In Required", description: "Please sign in to save poems.", variant: "destructive" });
+      toast({ title: "Create a Free Account", description: "Sign up to save your favorite poems — it's free!" });
       return;
     }
     toggleFavorite(id);
