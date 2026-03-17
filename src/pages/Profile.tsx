@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Heart, BookOpen, MessageSquare, Clock } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import { useReadingStreak } from "@/hooks/useReadingStreak";
+import ReadingHeatmap from "@/components/ReadingHeatmap";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -25,6 +27,7 @@ const Profile = () => {
   const [stats, setStats] = useState({ favorites: 0, history: 0, comments: 0, collections: 0 });
 
   usePageTitle("Profile");
+  const { data: streakData } = useReadingStreak(user?.id);
 
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
@@ -128,6 +131,9 @@ const Profile = () => {
               </Card>
             ))}
           </div>
+
+          {/* Reading Heatmap */}
+          {streakData && <ReadingHeatmap data={streakData} />}
 
           <Card>
             <CardHeader>
