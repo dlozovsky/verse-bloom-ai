@@ -18,13 +18,22 @@ const ReadingHistory = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 container py-12 flex items-center justify-center">
-          <div className="text-center space-y-4">
-            <Clock className="h-16 w-16 text-muted-foreground mx-auto" />
-            <h1 className="text-3xl font-bold">Sign In Required</h1>
-            <p className="text-muted-foreground">Sign in to track your reading history</p>
-            <Button asChild>
-              <Link to="/auth">Sign In</Link>
-            </Button>
+          <div className="text-center space-y-4 max-w-md">
+            <div className="mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+              <Clock className="h-10 w-10 text-primary" />
+            </div>
+            <h1 className="text-3xl font-serif font-bold">Reading History</h1>
+            <p className="text-muted-foreground">
+              Sign up to automatically track every poem you read and revisit your favorites.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button asChild>
+                <Link to="/auth">Create Free Account</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/discover">Browse Poems</Link>
+              </Button>
+            </div>
           </div>
         </main>
         <Footer />

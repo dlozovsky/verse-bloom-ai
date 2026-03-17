@@ -71,7 +71,7 @@ const PoemDetail = () => {
 
   const handleFavorite = () => {
     if (!user) {
-      toast({ title: "Sign In Required", description: "Please sign in to save poems to your favorites.", variant: "destructive" });
+      toast({ title: "Create a Free Account", description: "Sign up to save poems to your favorites — it's free!", variant: "default" });
       return;
     }
     if (id) toggleFavorite(id);
