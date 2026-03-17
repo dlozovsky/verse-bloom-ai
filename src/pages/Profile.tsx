@@ -132,6 +132,9 @@ const Profile = () => {
             ))}
           </div>
 
+          {/* Reading Heatmap */}
+          {streakData && <ReadingHeatmap data={streakData} />}
+
           <Card>
             <CardHeader>
               <CardTitle>Account Information</CardTitle>
