@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import PoemCard from "@/components/PoemCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { usePoems } from "@/hooks/usePoems";
 import { useThemes } from "@/hooks/useThemes";
 import { useAISearch } from "@/hooks/useAISearch";
 import { Skeleton } from "@/components/ui/skeleton";
-import { usePageTitle } from "@/hooks/usePageTitle";
 
 const PAGE_SIZE = 12;
 
@@ -30,7 +30,7 @@ const Discover = () => {
   const { data: themes } = useThemes();
   const aiSearch = useAISearch();
 
-  usePageTitle("Discover Poetry");
+  // SEOHead handles page title
 
   useEffect(() => {
     if (searchParams.get("theme")) setSelectedTheme(searchParams.get("theme") || "all");
@@ -73,6 +73,11 @@ const Discover = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Discover Poetry"
+        description="Browse and search thousands of classic poems by theme, popularity, or title. Find your next favorite verse."
+        canonicalPath="/discover"
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">

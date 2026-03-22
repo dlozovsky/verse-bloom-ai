@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Heart, Share2, ArrowLeft, Sparkles, Copy, Check, Volume2, Pause, Square, Type, Image } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,7 +13,6 @@ import { useIsFavorite, useToggleFavorite } from "@/hooks/useFavorites";
 import { useAddToHistory } from "@/hooks/useReadingHistory";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { usePageTitle } from "@/hooks/usePageTitle";
 import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { CommentsSection } from "@/components/CommentsSection";
 import AddToCollectionButton from "@/components/AddToCollectionButton";
@@ -48,7 +48,7 @@ const PoemDetail = () => {
   const { speak, pause, resume, stop, isSpeaking, isPaused, isSupported } = useTextToSpeech();
   const { shareAsImage } = useShareAsImage();
 
-  usePageTitle(poem ? `${poem.title} by ${poem.poets.name}` : undefined);
+  // usePageTitle handled by SEOHead
 
   useEffect(() => {
     if (id) {
@@ -137,8 +137,26 @@ const PoemDetail = () => {
     );
   }
 
+  const poemJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: poem.title,
+    author: { "@type": "Person", name: poem.poets.name },
+    text: poem.body.substring(0, 500),
+    datePublished: poem.year_published ? String(poem.year_published) : undefined,
+    genre: poem.poem_themes?.[0]?.themes?.name,
+    url: `${window.location.origin}/poem/${id}`,
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={`${poem.title} by ${poem.poets.name}`}
+        description={`Read "${poem.title}" by ${poem.poets.name}. ${poem.body.substring(0, 140).replace(/\n/g, ' ')}…`}
+        canonicalPath={`/poem/${id}`}
+        ogType="article"
+        jsonLd={poemJsonLd}
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-4xl mx-auto space-y-8">

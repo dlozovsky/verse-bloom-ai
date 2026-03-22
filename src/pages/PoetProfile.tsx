@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import PoemCard from "@/components/PoemCard";
 import { ArrowLeft, User, TrendingUp } from "lucide-react";
 import { usePoetDetail } from "@/hooks/usePoets";
@@ -19,8 +20,26 @@ const PoetProfile = () => {
     <div className="min-h-screen flex flex-col"><Header /><main className="flex-1 container py-12 text-center"><h1 className="text-4xl font-bold mb-4">Poet Not Found</h1><Button asChild><Link to="/poets">Browse Poets</Link></Button></main><Footer /></div>
   );
 
+  const poetJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: poet.name,
+    birthDate: poet.birth_year ? String(poet.birth_year) : undefined,
+    deathDate: poet.death_year ? String(poet.death_year) : undefined,
+    nationality: poet.nationality || undefined,
+    description: poet.bio || undefined,
+    url: `${window.location.origin}/poet/${id}`,
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={`${poet.name} — Poet Profile`}
+        description={poet.bio ? poet.bio.substring(0, 155) : `Explore poems by ${poet.name} on Poetry Hub.`}
+        canonicalPath={`/poet/${id}`}
+        ogType="profile"
+        jsonLd={poetJsonLd}
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-12">
