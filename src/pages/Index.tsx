@@ -42,6 +42,7 @@ const Index = () => {
         jsonLd={websiteJsonLd}
       />
       <Header />
+      <Hero />
       
       <main className="flex-1 container py-12 space-y-16">
         {/* Poem of the Day */}

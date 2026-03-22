@@ -137,8 +137,26 @@ const PoemDetail = () => {
     );
   }
 
+  const poemJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: poem.title,
+    author: { "@type": "Person", name: poem.poets.name },
+    text: poem.body.substring(0, 500),
+    datePublished: poem.year_published ? String(poem.year_published) : undefined,
+    genre: poem.poem_themes?.[0]?.themes?.name,
+    url: `${window.location.origin}/poem/${id}`,
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={`${poem.title} by ${poem.poets.name}`}
+        description={`Read "${poem.title}" by ${poem.poets.name}. ${poem.body.substring(0, 140).replace(/\n/g, ' ')}…`}
+        canonicalPath={`/poem/${id}`}
+        ogType="article"
+        jsonLd={poemJsonLd}
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-4xl mx-auto space-y-8">
