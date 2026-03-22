@@ -48,7 +48,7 @@ const PoemDetail = () => {
   const { speak, pause, resume, stop, isSpeaking, isPaused, isSupported } = useTextToSpeech();
   const { shareAsImage } = useShareAsImage();
 
-  usePageTitle(poem ? `${poem.title} by ${poem.poets.name}` : undefined);
+  // usePageTitle handled by SEOHead
 
   useEffect(() => {
     if (id) {
