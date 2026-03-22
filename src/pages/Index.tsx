@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PoemCard from "@/components/PoemCard";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Sparkles, BookMarked, CalendarDays } from "lucide-react";
 import { useFeaturedPoems } from "@/hooks/usePoems";
@@ -12,10 +13,20 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Trees, Book } from "lucide-react";
-import { usePageTitle } from "@/hooks/usePageTitle";
 
 const Index = () => {
-  usePageTitle();
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Poetry Hub",
+    url: window.location.origin,
+    description: "Explore thousands of classic poems from history's greatest poets.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${window.location.origin}/discover?search={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
   const { data: featuredPoems, isLoading } = useFeaturedPoems();
   const { data: themes, isLoading: themesLoading } = useThemes();
   const { data: poemOfTheDay, isLoading: potdLoading } = usePoemOfTheDay();
