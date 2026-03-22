@@ -2,6 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useReadingHistory } from "@/hooks/useReadingHistory";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import PoemCard from "@/components/PoemCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,7 @@ const ReadingHistory = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Reading History" description="Track your poetry reading journey. Revisit poems you've read and discover new ones." canonicalPath="/reading-history" />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">

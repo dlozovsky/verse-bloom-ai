@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +11,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Heart, BookOpen, MessageSquare, Clock } from "lucide-react";
-import { usePageTitle } from "@/hooks/usePageTitle";
 import { useReadingStreak } from "@/hooks/useReadingStreak";
 import ReadingHeatmap from "@/components/ReadingHeatmap";
 
@@ -26,7 +26,6 @@ const Profile = () => {
   const [changingPassword, setChangingPassword] = useState(false);
   const [stats, setStats] = useState({ favorites: 0, history: 0, comments: 0, collections: 0 });
 
-  usePageTitle("Profile");
   const { data: streakData } = useReadingStreak(user?.id);
 
   useEffect(() => {
@@ -111,6 +110,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Profile" description="Manage your Poetry Hub profile, view reading stats, and update account settings." />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-2xl mx-auto space-y-6">

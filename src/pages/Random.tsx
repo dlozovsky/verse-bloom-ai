@@ -1,6 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, RefreshCw } from "lucide-react";
@@ -12,6 +13,11 @@ const Random = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Random Discovery"
+        description="Embrace serendipity — discover a poem chosen at random from our collection of classic and contemporary poetry."
+        canonicalPath="/random"
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-4xl mx-auto space-y-8">

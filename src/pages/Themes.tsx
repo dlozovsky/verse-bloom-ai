@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Sparkles, Trees, Book } from "lucide-react";
@@ -14,6 +15,11 @@ const Themes = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Explore by Theme"
+        description="Journey through poetry by universal themes — love, nature, philosophy, and more. Find poems that resonate with you."
+        canonicalPath="/themes"
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">
