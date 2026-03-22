@@ -30,7 +30,7 @@ const Discover = () => {
   const { data: themes } = useThemes();
   const aiSearch = useAISearch();
 
-  usePageTitle("Discover Poetry");
+  // SEOHead handles page title
 
   useEffect(() => {
     if (searchParams.get("theme")) setSelectedTheme(searchParams.get("theme") || "all");
