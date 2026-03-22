@@ -2,6 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useReadingHistory } from "@/hooks/useReadingHistory";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import PoemCard from "@/components/PoemCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
