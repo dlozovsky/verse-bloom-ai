@@ -73,8 +73,12 @@ const Discover = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Discover Poetry"
+        description="Browse and search thousands of classic poems by theme, popularity, or title. Find your next favorite verse."
+        canonicalPath="/discover"
+      />
       <Header />
-      <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">
           <div>
             <h1 className="text-4xl md:text-5xl font-serif font-bold">Discover Poetry</h1>
