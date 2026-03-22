@@ -79,6 +79,7 @@ const Discover = () => {
         canonicalPath="/discover"
       />
       <Header />
+      <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">
           <div>
             <h1 className="text-4xl md:text-5xl font-serif font-bold">Discover Poetry</h1>
