@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import PoemCard from "@/components/PoemCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { usePoems } from "@/hooks/usePoems";
 import { useThemes } from "@/hooks/useThemes";
 import { useAISearch } from "@/hooks/useAISearch";
 import { Skeleton } from "@/components/ui/skeleton";
-import { usePageTitle } from "@/hooks/usePageTitle";
 
 const PAGE_SIZE = 12;
 
