@@ -44,8 +44,8 @@ const ReadingHistory = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Reading History" description="Track your poetry reading journey. Revisit poems you've read and discover new ones." canonicalPath="/reading-history" />
       <Header />
-      <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="flex items-center space-x-3">
             <Clock className="h-8 w-8 text-primary" />

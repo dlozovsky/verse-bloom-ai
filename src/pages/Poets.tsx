@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, User } from "lucide-react";
@@ -10,12 +11,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Poets = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  
-  useEffect(() => { document.title = "Master Poets — Poetry Hub"; }, []);
   const { data: poets, isLoading } = usePoets(searchQuery);
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Master Poets"
+        description="Explore works from history's greatest literary voices. Browse poet profiles, biographies, and their complete poetry collections."
+        canonicalPath="/poets"
+      />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-6xl mx-auto space-y-8">

@@ -110,6 +110,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Profile" description="Manage your Poetry Hub profile, view reading stats, and update account settings." />
       <Header />
       <main className="flex-1 container py-12">
         <div className="max-w-2xl mx-auto space-y-6">
